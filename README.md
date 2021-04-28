@@ -3,6 +3,7 @@
 ## Prerequisites
     Docker 20.10.5
     Elasticsearch: 7.12.1
+    MongoDB 4.4.5
 
 ## How to install Docker
 ### [Windows](https://docs.docker.com/docker-for-windows/install/) 

@@ -1,14 +1,41 @@
 import os
 
 from flask import Flask, render_template, request
+from flask_celery import make_celery
+
+from time import sleep
 
 app = Flask(__name__)
 app.config.from_pyfile('config.py')
 
+celery = make_celery(app)
+
 
 @app.route('/')
 def hello_world():
+    for i in range(5):
+        test.delay()
     return 'Hello World!'
+
+
+@app.route('/queue')
+def inspect_queue():
+    i = celery.control.inspect()
+    current_active = i.active()
+    scheduled = i.scheduled()
+    reserved = i.reserved()
+
+    return {
+        'active': current_active,
+        'scheduled': scheduled,
+        'reserved': reserved
+        }
+
+
+@celery.task(name='app.test')
+def test():
+    sleep(30)
+    return 'success'
 
 
 @app.route('/upload_page')
@@ -30,4 +57,4 @@ def upload():
 
 
 if __name__ == '__main__':
-    app.run()
+    app.run(debug=True)

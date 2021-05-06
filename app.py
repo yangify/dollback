@@ -1,4 +1,5 @@
 import os
+import time
 
 from flask import Flask, request
 from flask_cors import CORS, cross_origin
@@ -25,7 +26,14 @@ def upload():
 
 @app.route('/api/apk')
 def apk_list():
-    return {'apks': os.listdir(app.config['APK_FOLDER_PATH'])}
+    response = []
+    apks = os.listdir(app.config['APK_FOLDER_PATH'])
+    for apk in apks:
+        response.append({
+            'name': apk,
+            'date': time.ctime(os.path.getctime(app.config['APK_FOLDER_PATH'] + '/' + apk))
+        })
+    return {'apks': response}
 
 
 @app.route('/api/queue')

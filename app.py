@@ -24,6 +24,9 @@ def upload():
     return "Success"
 
 
+@app.route('/api/apk')
+def apk_list():
+    return {'apks': os.listdir(app.config['APK_FOLDER_PATH'])}
 
 
 @app.route('/api/queue')

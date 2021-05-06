@@ -20,7 +20,7 @@ celery = make_celery(app)
 def upload():
     file = request.files['file']
     file_path = save(file)
-    # process.delay(file, file_path)
+    process.delay(file.filename, file_path)
     return "Success"
 
 

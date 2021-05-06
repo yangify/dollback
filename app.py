@@ -1,9 +1,8 @@
 import os
 
 from flask import Flask, render_template, request
-from flask_celery import make_celery
-
-from time import sleep
+from src.flask_celery import make_celery
+from src.tasks import *
 
 app = Flask(__name__)
 app.config.from_pyfile('config.py')
@@ -30,12 +29,6 @@ def inspect_queue():
         'scheduled': scheduled,
         'reserved': reserved
         }
-
-
-@celery.task(name='app.test')
-def test():
-    sleep(30)
-    return 'success'
 
 
 @app.route('/upload_page')

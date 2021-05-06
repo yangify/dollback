@@ -1,9 +1,8 @@
+from celery import shared_task
 from time import sleep
 
-from app import celery
 
-
-@celery.task(name='app.test')
+@shared_task(name='test')
 def test():
     sleep(30)
     return 'success'

@@ -1,23 +1,32 @@
 import os
 
-from flask import Flask, render_template, request
+from flask import Flask, request
+from flask_cors import CORS, cross_origin
+
 from src.flask_celery import make_celery
-from src.tasks import *
+from src.tasks import process
+from src.utility import save
 
 app = Flask(__name__)
 app.config.from_pyfile('config.py')
+CORS(app)
 
 celery = make_celery(app)
 
 
-@app.route('/')
-def hello_world():
-    for i in range(5):
-        test.delay()
-    return 'Hello World!'
+@app.route('/api/upload', methods=['POST'])
+@cross_origin()
+def upload():
+    i = request
+    file = request.files['file']
+    file_path = save(file)
+    # process.delay(file, file_path)
+    return "Success"
 
 
-@app.route('/queue')
+
+
+@app.route('/api/queue')
 def inspect_queue():
     i = celery.control.inspect()
     current_active = i.active()

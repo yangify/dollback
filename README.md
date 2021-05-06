@@ -6,9 +6,11 @@
     Elasticsearch: 7.12.1
     MongoDB 4.4.5
 
-## How to install Docker
+## Docker
 ### [Windows](https://docs.docker.com/docker-for-windows/install/) 
 ### [Mac](https://docs.docker.com/docker-for-mac/install/)
+
+    sudo service docker start
 
 ## RabbitMQ
     docker run -d -p 5672:5672 --name rabbitmq rabbitmq

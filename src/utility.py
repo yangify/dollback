@@ -8,4 +8,5 @@ def save(file):
     if not os.path.exists(app.config['APK_FOLDER_PATH']):
         os.makedirs(app.config['APK_FOLDER_PATH'])
 
-    file.save(app.config['APK_FOLDER_PATH'] + file.filename)
+    filename = file.filename.replace(' ', '_')
+    file.save(app.config['APK_FOLDER_PATH'] + filename)

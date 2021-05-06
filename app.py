@@ -40,25 +40,7 @@ def inspect_queue():
         'active': current_active,
         'scheduled': scheduled,
         'reserved': reserved
-        }
-
-
-@app.route('/upload_page')
-def upload_page():
-    return render_template('upload.html')
-
-
-@app.route('/upload', methods=['POST'])
-def upload():
-    if 'file' not in request.files:
-        return 'Files required'
-
-    if not os.path.exists("./resources/apk"):
-        os.makedirs("./resources/apk")
-
-    file = request.files['file']
-    file.save('./resources/apk/' + file.filename)
-    return 'Success'
+    }
 
 
 if __name__ == '__main__':

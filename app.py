@@ -17,7 +17,6 @@ celery = make_celery(app)
 @app.route('/api/upload', methods=['POST'])
 @cross_origin()
 def upload():
-    i = request
     file = request.files['file']
     file_path = save(file)
     # process.delay(file, file_path)

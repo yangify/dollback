@@ -32,7 +32,7 @@ def apktool(filename, filepath, tool):
 
 
 def jadx(filename, input_path):
-    output_path = app.config['DECOMPILED_CODE_FOLDER_PATH'] + '/jadx/' + filename
+    output_path = os.path.join(app.config['SOURCE_CODE_FOLDER_PATH'], 'jadx', filename)
 
     command = app.config['JADX_COMMAND']
     command = command.replace('<OUTPUT_PATH>', output_path)
@@ -45,7 +45,7 @@ def jadx(filename, input_path):
 
 
 def move_file(filename, tool):
-    folder_path = app.config['DECOMPILED_CODE_FOLDER_PATH'] + '/' + tool + '/' + filename
+    folder_path = os.path.join(app.config['SOURCE_CODE_FOLDER_PATH'], tool, filename)
     clean(folder_path)
     shutil.move('./' + filename, folder_path)
     return folder_path

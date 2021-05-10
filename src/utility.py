@@ -17,3 +17,9 @@ def save(file):
 def clean(filepath):
     if os.path.exists(filepath):
         shutil.rmtree(filepath)
+
+
+def construct_command(command, input, output):
+    command = command.replace('<INPUT_PATH>', input)
+    command = command.replace('<OUTPUT_PATH>', output)
+    return command

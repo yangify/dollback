@@ -1,12 +1,13 @@
 import json
 import os
 
+from flask import current_app as app
 
-def write(content, filename, tool):
+
+def write(content, filename, decompiler):
+    create_output_directory(decompiler)
+    output_path = os.path.join(app.config['LINK_FOLDER_PATH'], decompiler, filename + ".json")
     json_output = json.dumps(content, indent=4)
-    create_output_directory(tool)
-
-    output_path = os.path.join("./resources/output", tool, filename + ".json")
 
     f = open(output_path, "w")
     f.write(json_output)

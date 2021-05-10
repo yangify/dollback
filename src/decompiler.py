@@ -3,7 +3,7 @@ import platform
 
 from flask import current_app as app
 
-from src.utility import clean, construct_command
+from src.utility import construct_command
 
 
 def decompile(filename, decompiler):
@@ -19,8 +19,6 @@ def decompile_apk(filename, decompiler):
 
 
 def apktool(filename):
-    clean('./' + filename)
-
     input_path = os.path.join(app.config['APK_FOLDER_PATH'], filename)
     output_path = os.path.join(app.config['SOURCE_CODE_FOLDER_PATH'], 'apktool', filename)
 
@@ -30,8 +28,6 @@ def apktool(filename):
 
 
 def jadx(filename):
-    clean('./' + filename)
-
     input_path = os.path.join(app.config['APK_FOLDER_PATH'], filename)
     output_path = os.path.join(app.config['SOURCE_CODE_FOLDER_PATH'], 'jadx', filename)
 

@@ -19,15 +19,15 @@ celery = make_celery(app)
 @cross_origin()
 def upload():
     file = request.files['file']
-    file_path = save(file)
-    process.delay(file.filename, file_path)
+    filename, filepath = save(file)
+    process(filename, filepath)
     return "Success"
 
 
 @app.route('/api/apk')
 def apk_list():
     response = []
-    apks = os.listdir(app.config['APK_FOLDER_PATH'])
+    apks = os.listdir(app.config['APK_FOLDER_PATH']) if os.path.exists(app.config['APK_FOLDER_PATH']) else []
     for apk in apks:
         response.append({
             'name': apk,

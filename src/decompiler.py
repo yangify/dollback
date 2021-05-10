@@ -5,33 +5,37 @@ from os.path import join
 
 from flask import current_app as app
 
+from src.utility import clean
 
-def decompile(file, file_path):
+
+def decompile(filename, filepath):
     output_paths = []
     for tool in app.config['DECOMPILERS']:
-        output_path = decompile_apk(file, file_path, tool)
+        filename_without_extension = filename[:-4]
+        output_path = decompile_apk(filename_without_extension, filepath, tool)
         output_paths.append(output_path)
     return output_paths
 
 
-def decompile_apk(file, file_path, tool):
+def decompile_apk(filename, filepath, tool):
     if tool == 'apktool':
-        apktool(file, file_path)
+        apktool(filename, filepath)
+        return move_file(filename, tool)
 
-    if tool == 'jadx':
-        jadx(file_path)
+    # if tool == 'jadx':
+    #     jadx(filename, filepath)
+    #     return move_file(filename, tool)
 
 
-def apktool(file, file_path):
-    command = "java -jar ./src/decompiler/apktool/apktool.jar d " + file_path
-    if platform.system().lower() == 'linux' and app.env == 'development':
-        command = "sudo " + command
+def apktool(filename, filepath):
+    clean('./' + filename)
+    command = app.config['APKTOOL_COMMAND'] + filepath
     os.system(command)
 
 
-def jadx(file_path):
+def jadx(filepath):
     path = join(os.getcwd() + "/src/decompiler/jadx/bin/jadx")
-    command = "\"" + path + "\"" + " " + file_path
+    command = "\"" + path + "\"" + " " + filepath
     if platform.system().lower() == 'linux':
         command = "sh " + command
     if platform.system().lower() == 'linux' and app.env == 'development':
@@ -39,35 +43,9 @@ def jadx(file_path):
     os.system(command)
 
 
-def move_file(file_path, tool):
-    create_output_directory(tool)
-    file_name = get_file_name(file_path)
+def move_file(filename, tool):
+    folder_path = app.config['DECOMPILED_CODE_PATH'] + '/' + tool + '/' + filename
+    clean(folder_path)
+    shutil.move('./' + filename, folder_path)
 
-    output_path = "./resources/output/archive/" + tool
-    if not os.path.exists(output_path):
-        os.makedirs(output_path)
-
-    folder_path = "./resources/output/archive/" + tool + "/" + file_name
-    if os.path.exists(folder_path):
-        shutil.rmtree(folder_path)
-    shutil.move("./" + file_name, "./resources/output/archive/" + tool)
-
-    return output_path + "/" + file_name
-
-
-def create_output_directory(tool):
-    if not os.path.exists("./resources/output/archive/" + tool):
-        os.makedirs("./resources/output/archive/" + tool)
-
-
-def get_file_name(file_path):
-    index = file_path.rfind('/')
-    if index == -1:
-        return remove_extension(file_path)
-
-    file_name = file_path[index+1:]
-    return remove_extension(file_name)
-
-
-def remove_extension(file_name):
-    return file_name[:-4]
+    return folder_path

@@ -7,4 +7,4 @@ from src.extractor import extract
 @shared_task(name='tasks.process')
 def process(filename, file_path):
     decompile(filename, file_path)
-    extract(filename)
+    # extract(filename)

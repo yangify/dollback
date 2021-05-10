@@ -16,8 +16,9 @@ def write(content, filename, decompiler):
 
 
 def create_output_directory(tool):
-    if not os.path.exists("./resources/output"):
-        os.mkdir("./resources/output")
+    if not os.path.exists(app.config['LINK_FOLDER_PATH']):
+        os.mkdir(app.config['LINK_FOLDER_PATH'])
 
-    if not os.path.exists("./resources/output/" + tool):
-        os.mkdir("./resources/output/" + tool)
+    path = os.path.join(app.config['LINK_FOLDER_PATH'], tool)
+    if not os.path.exists(path):
+        os.mkdir(path)

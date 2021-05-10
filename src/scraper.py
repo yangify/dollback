@@ -6,7 +6,7 @@ from src import reader
 def scrape(paths):
     output = {}
     for i, path in enumerate(paths):
-        print("Scraping... {}/{}".format(i+1, len(paths)), end='\r')
+        # print("Scraping... {}/{}".format(i+1, len(paths)), end='\r')
         link_found = scrape_one(path)
         if len(link_found) > 0:
             output[path] = link_found

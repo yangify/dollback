@@ -8,7 +8,7 @@ from src.extractor import extract
 def process(filename):
     decompilers = app.config['DECOMPILERS']
     for decompiler in decompilers:
-        process_each(filename, decompiler)  # change to delay
+        process_each.delay(filename, decompiler)
 
 
 @shared_task(name='tasks.process')

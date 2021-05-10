@@ -14,3 +14,4 @@ def process(filename):
 @shared_task(name='tasks.process')
 def process_each(filename, decompiler):
     decompile(filename, decompiler)
+    extract(filename, decompiler)

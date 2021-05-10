@@ -9,7 +9,7 @@ def save(file):
         os.makedirs(app.config['APK_FOLDER_PATH'])
 
     filename = file.filename.replace(' ', '_')
-    filepath = app.config['APK_FOLDER_PATH'] + '/' + filename
+    filepath = os.path.join(app.config['APK_FOLDER_PATH'], filename)
     file.save(filepath)
     return filename, filepath
 

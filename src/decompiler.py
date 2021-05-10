@@ -1,37 +1,41 @@
 import os
 import platform
-import shutil
 
 from flask import current_app as app
 
 from src.utility import clean
 
 
-def decompile(filename, filepath):
-    output_paths = []
-    for tool in app.config['DECOMPILERS']:
-        filename_without_extension = filename[:-4]
-        output_path = decompile_apk(filename_without_extension, filepath, tool)
-        output_paths.append(output_path)
-    return output_paths
+def decompile(filename, decompiler):
+    return decompile_apk(filename, decompiler)
 
 
-def decompile_apk(filename, filepath, tool):
-    if tool == 'apktool':
-        return apktool(filename, filepath, tool)
+def decompile_apk(filename, decompiler):
+    if decompiler == 'apktool':
+        return apktool(filename)
 
-    if tool == 'jadx':
-        return jadx(filename, filepath)
+    if decompiler == 'jadx':
+        return jadx(filename)
 
 
-def apktool(filename, filepath, tool):
+def apktool(filename):
     clean('./' + filename)
-    command = app.config['APKTOOL_COMMAND'] + filepath
+
+    input_path = os.path.join(app.config['APK_FOLDER_PATH'], filename)
+    output_path = os.path.join(app.config['SOURCE_CODE_FOLDER_PATH'], 'apktool', filename)
+
+    command = app.config['APKTOOL_COMMAND']
+    command = command.replace('<INPUT_PATH>', input_path)
+    command = command.replace('<OUTPUT_PATH>', output_path)
+
     os.system(command)
-    return move_file(filename, tool)
+    return output_path
 
 
-def jadx(filename, input_path):
+def jadx(filename):
+    clean('./' + filename)
+
+    input_path = os.path.join(app.config['APK_FOLDER_PATH'], filename)
     output_path = os.path.join(app.config['SOURCE_CODE_FOLDER_PATH'], 'jadx', filename)
 
     command = app.config['JADX_COMMAND']
@@ -42,10 +46,3 @@ def jadx(filename, input_path):
         command = "sh " + command
     os.system(command)
     return output_path
-
-
-def move_file(filename, tool):
-    folder_path = os.path.join(app.config['SOURCE_CODE_FOLDER_PATH'], tool, filename)
-    clean(folder_path)
-    shutil.move('./' + filename, folder_path)
-    return folder_path

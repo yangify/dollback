@@ -1,7 +1,6 @@
 import os
 import platform
 import shutil
-from os.path import join
 
 from flask import current_app as app
 
@@ -19,33 +18,34 @@ def decompile(filename, filepath):
 
 def decompile_apk(filename, filepath, tool):
     if tool == 'apktool':
-        apktool(filename, filepath)
-        return move_file(filename, tool)
+        return apktool(filename, filepath, tool)
 
-    # if tool == 'jadx':
-    #     jadx(filename, filepath)
-    #     return move_file(filename, tool)
+    if tool == 'jadx':
+        return jadx(filename, filepath)
 
 
-def apktool(filename, filepath):
+def apktool(filename, filepath, tool):
     clean('./' + filename)
     command = app.config['APKTOOL_COMMAND'] + filepath
     os.system(command)
+    return move_file(filename, tool)
 
 
-def jadx(filepath):
-    path = join(os.getcwd() + "/src/decompiler/jadx/bin/jadx")
-    command = "\"" + path + "\"" + " " + filepath
+def jadx(filename, input_path):
+    output_path = app.config['DECOMPILED_CODE_FOLDER_PATH'] + '/jadx/' + filename
+
+    command = app.config['JADX_COMMAND']
+    command = command.replace('<OUTPUT_PATH>', output_path)
+    command = command.replace('<INPUT_PATH>', input_path)
+
     if platform.system().lower() == 'linux':
         command = "sh " + command
-    if platform.system().lower() == 'linux' and app.env == 'development':
-        command = "sudo " + command
     os.system(command)
+    return output_path
 
 
 def move_file(filename, tool):
-    folder_path = app.config['DECOMPILED_CODE_PATH'] + '/' + tool + '/' + filename
+    folder_path = app.config['DECOMPILED_CODE_FOLDER_PATH'] + '/' + tool + '/' + filename
     clean(folder_path)
     shutil.move('./' + filename, folder_path)
-
     return folder_path

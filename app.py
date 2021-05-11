@@ -1,3 +1,4 @@
+import json
 import os
 import time
 
@@ -25,7 +26,7 @@ def upload():
 
 
 @app.route('/api/apk')
-def apk_list():
+def get_apk():
     response = []
     apks = os.listdir(app.config['APK_FOLDER_PATH']) if os.path.exists(app.config['APK_FOLDER_PATH']) else []
     for apk in apks:
@@ -34,6 +35,28 @@ def apk_list():
             'date': time.ctime(os.path.getctime(app.config['APK_FOLDER_PATH'] + '/' + apk))
         })
     return {'apks': response}
+
+
+@app.route('/api/link')
+def get_link():
+    filename = request.args.get('filename')
+    response = {}
+    for decompiler in app.config['DECOMPILERS']:
+        response[decompiler] = []
+        path = os.path.join(app.config['LINK_FOLDER_PATH'], decompiler, filename + '.json')
+        file = open(path)
+        data = json.load(file)
+
+        for path in data:
+            for link in data[path]:
+                root_path = os.path.join(app.config['SOURCE_CODE_FOLDER_PATH'], decompiler, filename)
+                file_path = path.replace(root_path, '')
+                response[decompiler].append({
+                    'path': file_path,
+                    'link': link
+                })
+
+    return response
 
 
 @app.route('/api/queue')

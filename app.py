@@ -44,6 +44,10 @@ def get_link():
     for decompiler in app.config['DECOMPILERS']:
         response[decompiler] = []
         path = os.path.join(app.config['LINK_FOLDER_PATH'], decompiler, filename + '.json')
+
+        if not os.path.exists(path):
+            continue
+
         file = open(path)
         data = json.load(file)
 

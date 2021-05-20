@@ -9,7 +9,7 @@ def scrape(paths):
         # print("Scraping... {}/{}".format(i+1, len(paths)), end='\r')
         link_found = scrape_one(path)
         if len(link_found) > 0:
-            document = {'path': path, 'findings': link_found}
+            document = {'path': path, 'links': link_found}
             output.append(document)
     return output
 

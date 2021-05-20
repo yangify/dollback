@@ -22,9 +22,9 @@ def save(findings, filename, decompiler):
     document = {
         "name": filename,
         "decompiler": decompiler,
-        "links": findings
+        "detections": findings
     }
-    if mongo.db.apks.find_one({"name": filename}) is None:
+    if mongo.db.apks.find_one({"name": filename, "decompiler": decompiler}) is None:
         mongo.db.apks.insert_one(document)
     else:
-        mongo.db.apks.find_one_and_update({"name": filename}, {"$set": document})
+        mongo.db.apks.find_one_and_update({"name": filename, "decompiler": decompiler}, {"$set": document})

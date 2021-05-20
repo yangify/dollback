@@ -9,7 +9,6 @@ from flask_pymongo import PyMongo
 from src.flask_celery import make_celery
 from src.tasks import process
 from src.utility import save
-from src.test import test
 
 app = Flask(__name__)
 app.config.from_pyfile('config.py')
@@ -28,7 +27,7 @@ def insert_one():
 
 @app.route('/findall')
 def find_all():
-    cursor = test()
+    cursor = mongo.db.apks.find({})
     output = list(cursor)
     return str(output)
 

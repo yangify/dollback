@@ -2,7 +2,7 @@ from celery import shared_task
 
 from flask import current_app as app
 from src.decompiler import decompile
-from src.extractor import extract
+from src.extractor import extract_and_save
 
 
 def process(filename):
@@ -14,4 +14,4 @@ def process(filename):
 @shared_task(name='tasks.process')
 def process_each(filename, decompiler):
     decompile(filename, decompiler)
-    extract(filename, decompiler)
+    extract_and_save(filename, decompiler)

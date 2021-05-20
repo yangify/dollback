@@ -1,12 +1,30 @@
 import os
 
 from flask import current_app as app
+from flask_pymongo import PyMongo
 
-from src import crawler, writer, scraper
+from src import crawler, scraper
+
+
+def extract_and_save(filename, decompiler):
+    findings = extract(filename, decompiler)
+    save(findings, filename, decompiler)
 
 
 def extract(filename, decompiler):
     source_path = os.path.join(app.config['SOURCE_CODE_FOLDER_PATH'], decompiler, filename)
     files = crawler.get_files(source_path)
-    findings = scraper.scrape(files)
-    return writer.write(findings, filename, decompiler)
+    return scraper.scrape(files)
+
+
+def save(findings, filename, decompiler):
+    mongo = PyMongo(app)
+    document = {
+        "name": filename,
+        "decompiler": decompiler,
+        "links": findings
+    }
+    if mongo.db.apks.find_one({"name": filename}) is None:
+        mongo.db.apks.insert_one(document)
+    else:
+        mongo.db.apks.find_one_and_update({"name": filename}, {"$set": document})

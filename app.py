@@ -75,27 +75,11 @@ def get_apk():
 
 @app.route('/api/link')
 def get_link():
-    filename = request.args.get('filename')
-    response = {}
-    for decompiler in app.config['DECOMPILERS']:
-        response[decompiler] = []
-        path = os.path.join(app.config['LINK_FOLDER_PATH'], decompiler, filename + '.json')
-
-        if not os.path.exists(path):
-            continue
-
-        file = open(path)
-        data = json.load(file)
-
-        for path in data:
-            for link in data[path]:
-                root_path = os.path.join(app.config['SOURCE_CODE_FOLDER_PATH'], decompiler, filename)
-                file_path = path.replace(root_path, '')
-                response[decompiler].append({
-                    'path': file_path,
-                    'link': link
-                })
-
+    response = {'response': []}
+    cursor = mongo.db.apks.find({})
+    for document in cursor:
+        document['_id'] = str(document['_id'])
+        response['response'].append(document)
     return response
 
 

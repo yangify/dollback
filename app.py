@@ -14,7 +14,6 @@ app.config.from_pyfile('config.py')
 CORS(app)
 
 celery = make_celery(app)
-
 mongo = PyMongo(app)
 
 

@@ -75,11 +75,11 @@ def get_apk():
 
 @app.route('/api/link')
 def get_link():
-    response = {'response': []}
+    response = {'data': []}
     cursor = mongo.db.apks.find({})
     for document in cursor:
         document['_id'] = str(document['_id'])
-        response['response'].append(document)
+        response['data'].append(document)
     return response
 
 

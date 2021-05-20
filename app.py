@@ -1,4 +1,3 @@
-import json
 import os
 import time
 
@@ -75,8 +74,9 @@ def get_apk():
 
 @app.route('/api/link')
 def get_link():
+    filename = request.args.get('filename')
     response = {'data': []}
-    cursor = mongo.db.apks.find({})
+    cursor = mongo.db.apks.find({'name': filename})
     for document in cursor:
         document['_id'] = str(document['_id'])
         response['data'].append(document)

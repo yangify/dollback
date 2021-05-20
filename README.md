@@ -19,7 +19,7 @@
     celery -A <project_name> worker --loglevel=INFO
 
 ## SourceGraph
-    docker run --publish 7080:7080 --publish 127.0.0.1:3370:3370 --rm --volume ~/.sourcegraph/config:/etc/sourcegraph --volume ~/.sourcegraph/data:/var/opt/sourcegraph--name sourcegraph sourcegraph/server:3.27.5
+    docker run --publish 7080:7080 --publish 127.0.0.1:3370:3370 --rm --volume ~/.sourcegraph/config:/etc/sourcegraph --volume ~/.sourcegraph/data:/var/opt/sourcegraph sourcegraph/server:3.27.5
 
 ## Running the app
 Create virtual environment 

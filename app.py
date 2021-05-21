@@ -57,10 +57,8 @@ def replace_one():
 def upload():
     file = request.files['file']
     filename, filepath = save(file)
-    if fs.exists(filename=filename):
-        existing_file_id = fs.find_one({'filename': filename})._id
-        fs.delete(existing_file_id)
-    mongo.save_file(filename, file)
+    if not fs.exists(filename=filename):
+        mongo.save_file(filename, file)
     process(filename)
     return "Success"
 

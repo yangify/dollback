@@ -1,5 +1,6 @@
 import os
 import time
+import gridfs
 
 from flask import Flask, request
 from flask_cors import CORS, cross_origin
@@ -15,6 +16,7 @@ CORS(app)
 
 celery = make_celery(app)
 mongo = PyMongo(app)
+fs = gridfs.GridFS(mongo.cx.dollback)
 
 
 @app.route('/insertone')
@@ -53,14 +55,14 @@ def replace_one():
 @app.route('/api/upload', methods=['POST'])
 @cross_origin()
 def upload():
-    try:
-        file = request.files['file']
-        filename, filepath = save(file)
-        mongo.save_file(filename, file)
-        process(filename)
-        return "Success"
-    except:
-        return "Fail"
+    file = request.files['file']
+    filename, filepath = save(file)
+    if fs.exists(filename=filename):
+        existing_file_id = fs.find_one({'filename': filename})._id
+        fs.delete(existing_file_id)
+    mongo.save_file(filename, file)
+    process(filename)
+    return "Success"
 
 
 @app.route('/api/download/<filename>')

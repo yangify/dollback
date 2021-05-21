@@ -70,14 +70,7 @@ def download(filename):
 
 @app.route('/api/apk')
 def get_apk():
-    response = []
-    apks = os.listdir(app.config['APK_FOLDER_PATH']) if os.path.exists(app.config['APK_FOLDER_PATH']) else []
-    for apk in apks:
-        response.append({
-            'name': apk,
-            'date': time.ctime(os.path.getctime(app.config['APK_FOLDER_PATH'] + '/' + apk))
-        })
-    return {'apks': response}
+    return {'apks': [{'name': grid_out.name, 'date': str(grid_out.upload_date)} for grid_out in fs.find()]}
 
 
 @app.route('/api/link')

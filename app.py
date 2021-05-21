@@ -1,5 +1,3 @@
-import os
-import time
 import gridfs
 
 from flask import Flask, request

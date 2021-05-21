@@ -53,10 +53,19 @@ def replace_one():
 @app.route('/api/upload', methods=['POST'])
 @cross_origin()
 def upload():
-    file = request.files['file']
-    filename, filepath = save(file)
-    process(filename)
-    return "Success"
+    try:
+        file = request.files['file']
+        filename, filepath = save(file)
+        mongo.save_file(filename, file)
+        process(filename)
+        return "Success"
+    except:
+        return "Fail"
+
+
+@app.route('/api/file/<filename>')
+def get_file(filename):
+    return mongo.send_file(filename)
 
 
 @app.route('/api/apk')

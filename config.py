@@ -7,3 +7,5 @@ LINK_FOLDER_PATH = './resources/link'
 
 APKTOOL_COMMAND = 'java -jar ./tools/decompiler/apktool/apktool.jar d <INPUT_PATH> -o <OUTPUT_PATH>'
 JADX_COMMAND = './tools/decompiler/jadx/bin/jadx -d <OUTPUT_PATH> <INPUT_PATH>'
+
+MONGO_URI = 'mongodb://localhost:27017/dollback'

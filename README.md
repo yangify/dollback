@@ -3,7 +3,7 @@
 ## Prerequisites
     Docker 20.10.5
     RabbitMQ 3.8.16
-    Elasticsearch: 7.12.1
+    SourceGraph: 3.27.5
     MongoDB 4.4.5
 
 ## Docker
@@ -18,10 +18,8 @@
 ## Celery Worker
     celery -A <project_name> worker --loglevel=INFO
 
-## Elasticsearch
-    docker network create elastic
-    docker pull docker.elastic.co/elasticsearch/elasticsearch:7.12.1
-    docker run --name elasticsearch --net elastic -p 9200:9200 -p 9300:9300 -e "discovery.type=single-node" docker.elastic.co/elasticsearch/elasticsearch:7.12.1
+## SourceGraph
+    docker run --publish 7080:7080 --publish 127.0.0.1:3370:3370 --rm --volume ~/.sourcegraph/config:/etc/sourcegraph --volume ~/.sourcegraph/data:/var/opt/sourcegraph sourcegraph/server:3.27.5
 
 ## Running the app
 Create virtual environment 

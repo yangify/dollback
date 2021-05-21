@@ -1,5 +1,6 @@
 import os
 import time
+import gridfs
 
 from flask import Flask, request
 from flask_cors import CORS, cross_origin
@@ -63,8 +64,8 @@ def upload():
         return "Fail"
 
 
-@app.route('/api/file/<filename>')
-def get_file(filename):
+@app.route('/api/download/<filename>')
+def download(filename):
     return mongo.send_file(filename)
 
 

@@ -3,6 +3,7 @@ from celery import shared_task
 from flask import current_app as app
 from src.decompiler import decompile
 from src.extractor import extract_and_save
+from src.git import commit_and_push
 
 
 def process(filename):
@@ -15,3 +16,4 @@ def process(filename):
 def process_each(filename, decompiler):
     decompile(filename, decompiler)
     extract_and_save(filename, decompiler)
+    commit_and_push(filename)

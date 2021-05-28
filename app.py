@@ -1,10 +1,12 @@
 import gridfs
 
+
 from flask import Flask, request
 from flask_cors import CORS, cross_origin
 from flask_pymongo import PyMongo
 
 from src.flask_celery import make_celery
+from src.git import create_repository, clone
 from src.tasks import process
 from src.utility import save
 
@@ -94,6 +96,14 @@ def inspect_queue():
         'scheduled': scheduled,
         'reserved': reserved
     }
+
+
+@app.route('/test')
+def execute_bash():
+    output = create_repository('test')
+    status = clone('test')
+    print(status)
+    return 'Success'
 
 
 if __name__ == '__main__':

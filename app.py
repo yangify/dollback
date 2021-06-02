@@ -6,7 +6,6 @@ from flask_cors import CORS, cross_origin
 from flask_pymongo import PyMongo
 
 from src.flask_celery import make_celery
-from src.git import create_repository, clone
 from src.tasks import process
 from src.utility import save
 
@@ -17,39 +16,6 @@ CORS(app)
 celery = make_celery(app)
 mongo = PyMongo(app)
 fs = gridfs.GridFS(mongo.cx.dollback)
-
-
-@app.route('/insertone')
-def insert_one():
-    output = mongo.db.apks.insert_one({"test": "test"})
-    return str(output)
-
-
-@app.route('/findall')
-def find_all():
-    cursor = mongo.db.apks.find({})
-    output = list(cursor)
-    return str(output)
-
-
-@app.route('/findone')
-def find_one():
-    output = mongo.db.apks.find_one({'name': 'updated'})
-    return str(output)
-
-
-@app.route('/updateone')
-def update_one():
-    # update will add missing fields
-    output = mongo.db.apks.find_one_and_update({'name': 'refreshed'}, {'$set': {'type': 'something'}})
-    return str(output)
-
-
-@app.route('/replaceone')
-def replace_one():
-    # replace will just wipe all old and insert new
-    output = mongo.db.apks.find_one_and_replace({'name': 'refreshed'}, {'new': 'new'})
-    return str(output)
 
 
 @app.route('/api/upload', methods=['POST'])
@@ -96,14 +62,6 @@ def inspect_queue():
         'scheduled': scheduled,
         'reserved': reserved
     }
-
-
-@app.route('/test')
-def execute_bash():
-    output = create_repository('test')
-    status = clone('test')
-    print(status)
-    return 'Success'
 
 
 if __name__ == '__main__':

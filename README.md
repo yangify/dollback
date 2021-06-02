@@ -3,7 +3,7 @@
 ## Prerequisites
     Docker 20.10.5
     RabbitMQ 3.8.16
-    SourceGraph: 3.27.5
+    SourceGraph: 3.28.0
     MongoDB 4.4.5
 
 ### Docker
@@ -20,7 +20,7 @@
     docker run -d -p 5672:5672 --name rabbitmq rabbitmq
 
 ### SourceGraph
-    docker run --publish 7080:7080 --publish 127.0.0.1:3370:3370 --rm --volume ~/.sourcegraph/config:/etc/sourcegraph --volume ~/.sourcegraph/data:/var/opt/sourcegraph sourcegraph/server:3.27.5
+    docker run --publish 7080:7080 --publish 127.0.0.1:3370:3370 --rm --volume ~/.sourcegraph/config:/etc/sourcegraph --volume ~/.sourcegraph/data:/var/opt/sourcegraph sourcegraph/server:3.28.0
 
 ## Running the app
 Create virtual environment 
@@ -42,6 +42,16 @@ python -m app run
 Start Celery Worker
 ```
 celery -A <project_name> worker --loglevel=INFO
+```
+
+## Serving local repository
+Install src-cli
+```
+https://github.com/sourcegraph/src-cli#installation-linux
+```
+Change directory into decompiled code folder and run the command
+```
+src serve-git
 ```
 
 ## AWS

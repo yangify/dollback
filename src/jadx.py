@@ -8,7 +8,7 @@ from src.utility import construct_command, clean
 
 def jadx(filename):
     input_path = os.path.join(app.config['APK_FOLDER_PATH'], filename)
-    output_path = os.path.join(app.config['SOURCE_CODE_FOLDER_PATH'], 'jadx', filename)
+    output_path = os.path.join(app.config['SOURCE_CODE_FOLDER_PATH'], filename, 'jadx')
     clean(output_path)
 
     command = construct_command(app.config['JADX_COMMAND'], input_path, output_path)

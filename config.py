@@ -14,9 +14,13 @@ JADX_COMMAND = './tools/decompiler/jadx/bin/jadx -d <OUTPUT_PATH> <INPUT_PATH>'
 # DATABASE
 MONGO_URI = 'mongodb://localhost:27017/dollback'
 
-# CODECOMMIT
-CODECOMMIT_USERNAME = 'admin-at-496345044153'
-CODECOMMIT_PASSWORD = 'yPuH144HJh5LZgw401cB4Jt+esb5pSkoTWNnj11NWQw='
-CREATE_REPOSITORY_CMD = 'aws codecommit create-repository --repository-name {repository_name}'
-CLONE_REPOSITORY_CMD = 'git clone https://{username}:{password}@git-codecommit.ap-southeast-1.amazonaws.com/v1/repOs' \
-                       '/{repository_name} '
+# GIT
+COMMIT = 'cd resources/code/{filename}; git init; git add .; git commit -m "first commit"'
+
+# SOURCEGRAPH
+SOURCEGRAPH_URL = 'http://localhost:7080'
+SOURCEGRAPH_API = '/.api/graphql'
+SOURCEGRAPH_TOKEN = 'REDACTED'
+SOURCEGRAPH_LOCALHOST = 'RXh0ZXJuYWxTZXJ2aWNlOjk='
+SOURCEGRAPH_UPDATE_HOST_QUERY = 'mutation UpdateExternalService($input: UpdateExternalServiceInput = {id: \"{' \
+                                'host_id}\"}) { updateExternalService(input: $input) { id, displayName } }'

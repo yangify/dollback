@@ -41,7 +41,7 @@ def get_apk():
 
 @app.route('/api/link')
 def get_link():
-    apk_name = request.args.get('apk')
+    apk_name = request.args.get('filename')
     return get_links(apk_name)
 
 

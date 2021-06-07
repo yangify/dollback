@@ -1,6 +1,5 @@
 import gridfs
 
-
 from flask import Flask, request
 from flask_cors import CORS, cross_origin
 from flask_pymongo import PyMongo
@@ -62,6 +61,28 @@ def inspect_queue():
         'scheduled': scheduled,
         'reserved': reserved
     }
+
+
+@app.route('/api/configuration', methods=['GET', 'POST', 'PUT', 'DELETE'])
+def configure():
+
+    if request.method == 'GET':
+        query_id = request.form['_id']
+        mongo.db.configuration.find_one({'_id': query_id})
+        return 'get success'
+
+    if request.method == 'POST':
+        name = request.form['name']
+        query = request.form['query']
+        data = {'name': name, 'query': query}
+        mongo.db.configuration.insert_one(data)
+        return 'post success'
+
+    if request.method == 'PUT':
+        return 'put success'
+
+    if request.method == 'DELETE':
+        return 'delete success'
 
 
 if __name__ == '__main__':

@@ -41,8 +41,14 @@ def get_apk():
 
 @app.route('/api/link')
 def get_link():
-    apk_name = request.args.get('filename')
-    return get_links(apk_name)
+    filename = request.args.get('filename')
+    data = mongo.db.link.find_one({'filename': filename})
+    if data is None:
+        data = get_links(filename)
+        data['filename'] = filename
+        mongo.db.link.insert_one(data)
+    data['_id'] = str(data['_id'])
+    return data
 
 
 @app.route('/api/queue')

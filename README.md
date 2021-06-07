@@ -53,24 +53,3 @@ Change directory into decompiled code folder and run the command
 ```
 src serve-git
 ```
-
-## AWS
-ssh command
-```
-ssh -i "dollup.pem" ec2-user@ec2-13-212-108-221.ap-southeast-1.compute.amazonaws.com```
-```
-
-configuration guide
-```
-https://docs.aws.amazon.com/codecommit/latest/userguide/setting-up-ssh-unixes.html?icmpid=docs_acc_console_connect_np
-```
-
-create-repo
-```
-https://docs.aws.amazon.com/codecommit/latest/userguide/how-to-create-repository.html#how-to-create-repository-cli
-```
-
-create bash script
-```
-chmod 755 <script name>
-```

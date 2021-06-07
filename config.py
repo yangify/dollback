@@ -24,3 +24,15 @@ SOURCEGRAPH_TOKEN = 'REDACTED'
 SOURCEGRAPH_LOCALHOST = 'RXh0ZXJuYWxTZXJ2aWNlOjk='
 SOURCEGRAPH_UPDATE_HOST_QUERY = 'mutation UpdateExternalService($input: UpdateExternalServiceInput = {id: \"{' \
                                 'host_id}\"}) { updateExternalService(input: $input) { id, displayName } }'
+SOURCEGRAPH_SEARCH_URL = 'query { '\
+                         '  search ( query: \"repo:^<REPO_NAME>$ (http|ftp|https)://([\\\\w_-]+(?:(?:\\\\.[\\\\w_-]+)+))([\\\\w.,@?^=%&:/~+#-]*[\\\\w@?^=%&/~+#-])? count:all\" patternType: regexp ) { '\
+                         '      results { '\
+                         '          matchCount '\
+                         '          results { ...result } '\
+                         '      } '\
+                         '  } '\
+                         '} '\
+                         'fragment result on FileMatch { '\
+                         '  file { path name } '\
+                         '  lineMatches { offsetAndLengths preview } '\
+                         '}'\

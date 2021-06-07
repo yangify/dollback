@@ -7,6 +7,7 @@ from flask_pymongo import PyMongo
 from src.flask_celery import make_celery
 from src.tasks import process
 from src.utility import save
+from src.sourcegraph import *
 
 app = Flask(__name__)
 app.config.from_pyfile('config.py')
@@ -40,13 +41,8 @@ def get_apk():
 
 @app.route('/api/link')
 def get_link():
-    filename = request.args.get('filename')
-    response = {'data': []}
-    cursor = mongo.db.apks.find({'name': filename})
-    for document in cursor:
-        document['_id'] = str(document['_id'])
-        response['data'].append(document)
-    return response
+    apk_name = request.args.get('apk')
+    return get_links(apk_name)
 
 
 @app.route('/api/queue')
@@ -65,7 +61,6 @@ def inspect_queue():
 
 @app.route('/api/configuration', methods=['GET', 'POST', 'PUT', 'DELETE'])
 def configure():
-
     if request.method == 'GET':
         query_id = request.form['_id']
         mongo.db.configuration.find_one({'_id': query_id})
@@ -83,6 +78,8 @@ def configure():
 
     if request.method == 'DELETE':
         return 'delete success'
+
+    return 'nothing processed'
 
 
 if __name__ == '__main__':

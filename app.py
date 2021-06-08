@@ -69,9 +69,10 @@ def inspect_queue():
 @app.route('/api/configuration', methods=['GET', 'POST', 'PUT', 'DELETE'])
 def configure():
     if request.method == 'GET':
-        query_id = request.form['_id']
-        mongo.db.configuration.find_one({'_id': query_id})
-        return 'get success'
+        data = list(mongo.db.configuration.find({}))
+        for d in data:
+            d['_id'] = str(d['_id'])
+        return {'data': data}
 
     if request.method == 'POST':
         name = request.form['name']

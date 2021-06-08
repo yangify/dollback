@@ -20,7 +20,7 @@ COMMIT = 'cd resources/code/{filename}; git init; git add .; git commit -m "firs
 # SOURCEGRAPH
 SOURCEGRAPH_URL = 'http://localhost:7080'
 SOURCEGRAPH_API = '/.api/graphql'
-SOURCEGRAPH_TOKEN = 'REDACTED'
+SOURCEGRAPH_TOKEN = 'cd511fcfa4968559732f6863ef4fd7bc17c22bc3'
 SOURCEGRAPH_LOCALHOST = 'RXh0ZXJuYWxTZXJ2aWNlOjk='
 SOURCEGRAPH_UPDATE_HOST_QUERY = 'mutation UpdateExternalService($input: UpdateExternalServiceInput = {id: \"{' \
                                 'host_id}\"}) { updateExternalService(input: $input) { id, displayName } }'
@@ -35,4 +35,4 @@ SOURCEGRAPH_SEARCH_URL = 'query { '\
                          'fragment result on FileMatch { '\
                          '  file { path name } '\
                          '  lineMatches { offsetAndLengths preview } '\
-                         '}'\
+                         '}'

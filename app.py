@@ -3,6 +3,7 @@ import gridfs
 from flask import Flask, request
 from flask_cors import CORS, cross_origin
 from flask_pymongo import PyMongo
+from bson.objectid import ObjectId
 
 from src.flask_celery import make_celery
 from src.tasks import process
@@ -66,8 +67,10 @@ def inspect_queue():
     }
 
 
-@app.route('/api/configuration', methods=['GET', 'POST', 'PUT', 'DELETE'])
-def configure():
+@app.route('/api/configuration', methods=['GET', 'POST', 'PUT'])
+@app.route('/api/configuration/<_id>', methods=['DELETE'])
+def configure(_id=None):
+
     if request.method == 'GET':
         data = list(mongo.db.configuration.find({}))
         for d in data:
@@ -75,17 +78,21 @@ def configure():
         return {'data': data}
 
     if request.method == 'POST':
-        name = request.form['name']
+        title = request.form['title']
         query = request.form['query']
-        data = {'name': name, 'query': query}
+        data = {'title': title, 'query': query}
         mongo.db.configuration.insert_one(data)
-        return 'post success'
 
     if request.method == 'PUT':
         return 'put success'
 
     if request.method == 'DELETE':
-        return 'delete success'
+        data = mongo.db.configuration.find_one({'_id': ObjectId(_id)})
+        if data is not None:
+            data['_id'] = str(data['_id'])
+
+        output = mongo.db.configuration.delete_one({'_id': ObjectId(_id)})
+        return {'data': dict(data)} if output.deleted_count == 1 else {'data': {}}
 
     return 'nothing processed'
 

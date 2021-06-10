@@ -8,7 +8,10 @@ open port 3434
     $ ssh -i dollup.pem ubuntu@<Public DNS of ec2>
 
     if an error occur, run: $ chmod 400 dollup.pem
-
+Update
+```
+$ sudo apt-get update
+```
 ## Setup Docker
 Install docker
 ```
@@ -25,10 +28,6 @@ $ sudo snap install docker
     Note: $ sudo service docker start; sudo docker container start mongodb
 
 ## Setup Application
-Update
-```
-$ sudo apt-get update
-```
 Install java
 ```
 $ sudo apt install openjdk-8-jre-headless

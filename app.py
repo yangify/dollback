@@ -55,6 +55,8 @@ def get_apk(_id=None):
 @app.route('/api/link')
 def get_link():
     filename = request.args.get('filename')
+    if filename == '' or filename is None:
+        return {'data': []}
 
     data = get_links(filename)
     data['filename'] = filename

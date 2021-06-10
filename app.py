@@ -35,13 +35,15 @@ def download(filename):
     return mongo.send_file(filename)
 
 
-@app.route('/api/apk', methods=['GET', 'DELETE'])
-def get_apk():
+@app.route('/api/apk', methods=['GET'])
+@app.route('/api/apk/<_id>', methods=['DELETE'])
+def get_apk(_id=None):
     if request.method == 'GET':
-        return {'apks': [{'name': grid_out.name, 'date': str(grid_out.upload_date)} for grid_out in fs.find()]}
+        return {'apks': [{'_id': str(grid_out._id), 'name': grid_out.name, 'date': str(grid_out.upload_date)} for grid_out in fs.find()]}
 
     if request.method == 'DELETE':
-        return 'deleting'
+        fs.delete(ObjectId(_id))
+        return {'id': _id}
 
 
 @app.route('/api/link')

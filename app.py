@@ -49,11 +49,13 @@ def get_apk(_id=None):
 @app.route('/api/link')
 def get_link():
     filename = request.args.get('filename')
-    if filename is not None and filename != '' and \
-            mongo.db.link.find_one({'filename': filename}) is None:
-        data = get_links(filename)
-        data['filename'] = filename
-        mongo.db.link.insert_one(data)
+
+    data = get_links(filename)
+    data['filename'] = filename
+
+    if mongo.db.link.find_one({'filename': filename}) is not None:
+        mongo.db.link.delete_one({'filename': filename})
+        mongo.db.link.insert(data)
 
     data = mongo.db.link.find_one_or_404({'filename': filename})
     data['_id'] = str(data['_id'])

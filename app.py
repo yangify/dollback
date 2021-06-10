@@ -61,7 +61,7 @@ def get_link():
 
     if mongo.db.link.find_one({'filename': filename}) is not None:
         mongo.db.link.delete_one({'filename': filename})
-        mongo.db.link.insert(data)
+    mongo.db.link.insert(data)
 
     data = mongo.db.link.find_one_or_404({'filename': filename})
     data['_id'] = str(data['_id'])

@@ -204,5 +204,7 @@ $ docker logs $(docker ps | grep sourcegraph/server | awk '{ print $1 }')
 * Navigate to user logo and click to reveal a drop-down
 * Select **Site admin**
 * Select **Manage code hosts** under **Repositories**
-
+* Select **Sourcegraph CLI Serve-Git**
+* Update URL
+* Click Add repository
 ## End

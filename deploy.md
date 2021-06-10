@@ -24,9 +24,16 @@ $ sudo snap install docker
     Note: $ sudo service docker start; sudo docker container start mongodb
 
 ## Setup Application
-Install Python virtualenv
+Update
 ```
 $ sudo apt-get update
+```
+Install java
+```
+$ sudo apt install openjdk-8-jre-headless
+```
+Install Python virtualenv
+```
 $ sudo apt-get install python3-venv
 ```
 Clone app
@@ -43,7 +50,7 @@ Install dependencies
 ```
 $ pip install -r requirements.txt
 ```
-Test
+Test run
 ```
 $ python app.py
 $ gunicorn -b 0.0.0.0:8000 app:app
@@ -83,6 +90,17 @@ Install Nginx
 ```
 sudo apt-get nginx
 ```
+Update config file to increase file upload size
+```
+$ sudo vim /etc/nginx/nginx.conf
+```
+Add the following to config file
+```
+http {
+    client_max_body_size 100M;
+    ...
+}
+```
 Start Nginx
 ```
 $ sudo systemctl start nginx
@@ -117,4 +135,9 @@ $ sudo systemctl restart nginx
 # Check server logs
 ```
 $ journalctl -u dollback
+```
+
+# Clear server logs
+```
+$ journalctl --vacuum-time=1s
 ```

@@ -41,7 +41,7 @@ def get_apk():
         return {'apks': [{'name': grid_out.name, 'date': str(grid_out.upload_date)} for grid_out in fs.find()]}
 
     if request.method == 'DELETE':
-
+        return 'deleting'
 
 
 @app.route('/api/link')

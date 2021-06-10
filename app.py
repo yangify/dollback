@@ -35,20 +35,25 @@ def download(filename):
     return mongo.send_file(filename)
 
 
-@app.route('/api/apk')
+@app.route('/api/apk', methods=['GET', 'DELETE'])
 def get_apk():
-    return {'apks': [{'name': grid_out.name, 'date': str(grid_out.upload_date)} for grid_out in fs.find()]}
+    if request.method == 'GET':
+        return {'apks': [{'name': grid_out.name, 'date': str(grid_out.upload_date)} for grid_out in fs.find()]}
+
+    if request.method == 'DELETE':
+
 
 
 @app.route('/api/link')
 def get_link():
     filename = request.args.get('filename')
-    if mongo.db.link.find_one({'filename': filename}) is None:
+    if filename is not None and filename != '' and \
+            mongo.db.link.find_one({'filename': filename}) is None:
         data = get_links(filename)
         data['filename'] = filename
         mongo.db.link.insert_one(data)
 
-    data = mongo.db.link.find_one({'filename': filename})
+    data = mongo.db.link.find_one_or_404({'filename': filename})
     data['_id'] = str(data['_id'])
     return data
 

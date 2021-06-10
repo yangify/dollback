@@ -19,6 +19,11 @@ mongo = PyMongo(app)
 fs = gridfs.GridFS(mongo.cx.dollback)
 
 
+@app.route('/')
+def home():
+    return 'Welcome to dollback'
+
+
 @app.route('/api/upload', methods=['POST'])
 @cross_origin()
 def upload():

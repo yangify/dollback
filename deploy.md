@@ -62,19 +62,44 @@ Note: there should be no error running them; terminate when done
 ## Setup SourceGraph src-cli
 Install src-cli
 ```
-$ curl -L https://sourcegraph.com/.api/src-cli/src_linux_amd64 -o /usr/local/bin/src
-$ chmod +x /usr/local/bin/src
+$ sudo curl -L https://sourcegraph.com/.api/src-cli/src_linux_amd64 -o /usr/local/bin/src
+$ sudo chmod +x /usr/local/bin/src
 ```
-Serve local repository
+Create local repo folder
 ```
-$ cd dollback/resources/code
-$ src serve-git &
+mkdir dollback/resouces/code
 ```
-
-## Setup systemd
 Create unit file
 ```
-$ sudo vim /etc/systemd/system/helloworld.service
+$ sudo vim /etc/systemd/system/localrepo.service
+```
+Copy the following in
+```
+[Unit]
+Description=Local repository for sourcegraph
+After=network.target
+
+[Service]
+User=ubuntu
+Group=www-data
+WorkingDirectory=/home/ubuntu/dollback/resources/code
+ExecStart=src serve-git
+Restart=always
+
+[Install]
+WantedBy=multi-user.target
+```
+Enable the service
+```
+$ sudo systemctl daemon-reload
+$ sudo systemctl start localrepo
+$ sudo systemctl enable localrepo
+```
+
+## Setup auto restart for DollBack
+Create unit file
+```
+$ sudo vim /etc/systemd/system/dollback.service
 ```
 Copy the following in
 ```
@@ -102,7 +127,7 @@ $ sudo systemctl enable dollback
 ## Setup Nginx
 Install Nginx
 ```
-sudo apt-get nginx
+sudo apt-get install nginx
 ```
 Update config file to increase file upload size
 ```
@@ -127,11 +152,17 @@ $ sudo vim /etc/nginx/sites-available/default
 ```
 Add ```proxy_pass``` at ```location /```
 ```
-# Some code above
+// remove these
+location / {
+    # First attempt to serve request as file, then
+    # as directory, then fall back to displaying a 404.
+    try_files $uri $uri/ =404;
+ }
+
+# with these
 location / {
     proxy_pass http://127.0.0.1:8000;
 }
-# some code below
 ```
 Restart Nginx
 ```
@@ -161,11 +192,6 @@ Start mongodb
 ```
 $ sudo service docker start
 $ sudo docker start mongodb
-```
-Serve local repository
-```
-cd dollback/resources/code
-serve 
 ```
 
 # Deployment (SourceGraph)

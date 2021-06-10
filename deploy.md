@@ -23,9 +23,11 @@ $ sudo snap install docker
 ```
 
 ## Setup MongoDB
-    $ docker run -d -p 27017:27017 --name mongodb mongo:4.4.5
-    
-    Note: $ sudo service docker start; sudo docker container start mongodb
+```
+$ sudo docker run -d -p 27017:27017 --name mongodb mongo:4.4.5
+
+Note: $ sudo service docker start; sudo docker container start mongodb
+```
 
 ## Setup Application
 Install java
@@ -38,7 +40,7 @@ $ sudo apt-get install python3-venv
 ```
 Clone app
 ```
-$ git clone https://github.com/hongyang-work/dollback.githttps://github.com/hongyang-work/dollback.git
+$ git clone https://github.com/hongyang-work/dollback.git
 ```
 Setup virtual environment
 ```

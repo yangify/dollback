@@ -1,3 +1,5 @@
+import json
+
 from bson import ObjectId
 from flask import Blueprint, request
 
@@ -17,7 +19,7 @@ def configure(_id=None):
         return {'data': data}
 
     if request.method == 'POST':
-        data = request.data
+        data = json.loads(request.data)
         mongo.db.configuration.insert_one(data)
         return 'post success'
 

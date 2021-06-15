@@ -6,8 +6,8 @@ from database.db import mongo
 configuration = Blueprint('configuration', __name__)
 
 
-@configuration.route('/api/configuration', methods=['GET', 'POST', 'PUT'])
-@configuration.route('/api/configuration/<_id>', methods=['DELETE'])
+@configuration.route('/api/configuration',          methods=['GET', 'POST'])
+@configuration.route('/api/configuration/<_id>',    methods=['PUT', 'DELETE'])
 def configure(_id=None):
 
     if request.method == 'GET':
@@ -17,10 +17,9 @@ def configure(_id=None):
         return {'data': data}
 
     if request.method == 'POST':
-        title = request.form['title']
-        query = request.form['query']
-        data = {'title': title, 'query': query}
+        data = request.data
         mongo.db.configuration.insert_one(data)
+        return 'post success'
 
     if request.method == 'PUT':
         return 'put success'

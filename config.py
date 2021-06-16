@@ -24,12 +24,12 @@ SOURCEGRAPH_TOKEN = 'cd511fcfa4968559732f6863ef4fd7bc17c22bc3'
 SOURCEGRAPH_LOCALHOST = 'RXh0ZXJuYWxTZXJ2aWNlOjk='
 SOURCEGRAPH_UPDATE_HOST_QUERY = 'mutation UpdateExternalService($input: UpdateExternalServiceInput = {id: \"{' \
                                 'host_id}\"}) { updateExternalService(input: $input) { id, displayName } }'
-SOURCEGRAPH_SEARCH_URL = 'query { '\
-                         '  search ( query: \"repo:^<REPO_NAME>$ (http|ftp|https)://([\\\\w_-]+(?:(?:\\\\.[\\\\w_-]+)+))([\\\\w.,@?^=%&:/~+#-]*[\\\\w@?^=%&/~+#-])? count:all\" patternType: regexp ) { '\
-                         '      results { '\
-                         '          matchCount '\
-                         '          results { ...result } '\
-                         '      } '\
+SOURCEGRAPH_SEARCH_QUERY = 'query { '\
+                         '  search ( query: \"repo:^<REPO_NAME>$ <SEARCH_TERM> count:all\" patternType: <PATTERN_TYPE> ) { '\
+                         '    results { '\
+                         '      matchCount '\
+                         '      results { ...result } '\
+                         '    } '\
                          '  } '\
                          '} '\
                          'fragment result on FileMatch { '\

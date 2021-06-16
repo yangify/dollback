@@ -25,6 +25,7 @@ def craft_query(meta_query, repo_name):
 def craft_results(data):
     response = []
     for result in data['data']['search']['results']['results']:
+        if not result: continue
         filename = result['file']['name']
         filepath = result['file']['path']
         for line_match in result['lineMatches']:

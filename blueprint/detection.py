@@ -8,11 +8,12 @@ detection = Blueprint('detection', __name__)
 
 @detection.route('/api/link')
 def get_links():
+    response = {'data': []}
     filename = request.args.get('filename')
     if filename == '' or filename is None:
-        return {'data': []}
+        return response
 
-    response = {'filename': filename, 'results': []}
+    response['filename'] = filename
     groups = list(mongo.db.configuration.find({}))
     for group in groups:
         result = {
@@ -26,16 +27,16 @@ def get_links():
                 'data': search(query, filename)
             }
             result['data'].append(query_output)
-        response['results'].append(result)
+        response['data'].append(result)
 
-    db_action(filename, response)
-    return response
+    return save(filename, response)
 
 
-def db_action(filename, response):
+def save(filename, response):
     if mongo.db.link.find_one({'filename': filename}) is not None:
         mongo.db.link.delete_one({'filename': filename})
     mongo.db.link.insert(response)
 
     data = mongo.db.link.find_one_or_404({'filename': filename})
-    response['_id'] = str(data['_id'])
+    data['_id'] = str(data['_id'])
+    return data

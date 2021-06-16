@@ -6,12 +6,12 @@ from flask import current_app as app
 def search(query, repo_name):
     json_query = craft_query(query, repo_name)
     data, status_code = send_request(json_query)
-    return craft_results(data)
+    return craft_results(data, query['pattern_type'])
 
 
-def craft_query(meta_query, repo_name):
-    search_term = meta_query['search_term']
-    pattern_type = meta_query['pattern_type']
+def craft_query(query, repo_name):
+    search_term = query['search_term']
+    pattern_type = query['pattern_type']
     search_query = app.config['SOURCEGRAPH_SEARCH_QUERY'] \
         .replace('<REPO_NAME>', repo_name) \
         .replace('<SEARCH_TERM>', search_term) \
@@ -22,7 +22,7 @@ def craft_query(meta_query, repo_name):
     }
 
 
-def craft_results(data):
+def craft_results(data, pattern_type):
     response = []
     for result in data['data']['search']['results']['results']:
         if not result: continue
@@ -33,20 +33,20 @@ def craft_results(data):
             end = line_match['offsetAndLengths'][0][1]
             line = line_match['preview']
 
-            result = craft_result(filename, filepath, line, start, end)
+            result = craft_result(filename, filepath, line, start, end, pattern_type)
             response.append(result)
 
     return response
 
 
-def craft_result(filename, filepath, line, start, end):
+def craft_result(filename, filepath, line, start, end, pattern_type):
     return {
         'file':
             {
                 'name': filename,
                 'path': filepath
             },
-        'link': line[start: start + end]
+        'link': line[start: start + end] if pattern_type == 'regexp' else line
     }
 
 

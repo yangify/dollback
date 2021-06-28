@@ -23,7 +23,7 @@ def get_links():
         for query in group['data']:
             query_output = {
                 'title': query['title'],
-                'query': query['search_term'],
+                'query': query['searchTerm'],
                 'data': search(query, filename)
             }
             result['data'].append(query_output)

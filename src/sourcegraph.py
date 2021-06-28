@@ -6,12 +6,12 @@ from flask import current_app as app
 def search(query, repo_name):
     json_query = craft_query(query, repo_name)
     data, status_code = send_request(json_query)
-    return craft_results(data, query['pattern_type'])
+    return craft_results(data, query['patternType'])
 
 
 def craft_query(query, repo_name):
-    search_term = query['search_term']
-    pattern_type = query['pattern_type']
+    search_term = query['searchTerm']
+    pattern_type = query['patternType']
     search_query = app.config['SOURCEGRAPH_SEARCH_QUERY'] \
         .replace('<REPO_NAME>', repo_name) \
         .replace('<SEARCH_TERM>', search_term) \

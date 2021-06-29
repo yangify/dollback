@@ -29,6 +29,12 @@ $ sudo docker run -d -p 27017:27017 --name mongodb mongo:4.4.5
 Note: $ sudo service docker start; sudo docker container start mongodb
 ```
 
+Mongo shell
+```
+docker exec -it mongodb mongo
+use dollback
+```
+
 ## Setup Application
 Install java
 ```

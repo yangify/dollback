@@ -64,6 +64,15 @@ $ python app.py
 $ gunicorn -b 0.0.0.0:8000 app:app
 Note: there should be no error running them; terminate when done
 ```
+Set Gunicorn timeout
+```
+$ cd venv/lib/python3.8/site-packages/gunicorn
+
+class Timeout(Setting):
+    ...
+    default = 180
+
+```
 
 ## Setup SourceGraph src-cli
 Install src-cli

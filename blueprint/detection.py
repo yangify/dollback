@@ -24,7 +24,7 @@ def get_links():
             query_output = {
                 'title': query['title'],
                 'query': query['searchTerm'],
-                'data': search(query, filename)[:100]  # remove [:100] when infinite scrolling is done
+                'data': search(query, filename)  # remove [:100] when infinite scrolling is done
             }
             result['data'].append(query_output)
         response['data'].append(result)

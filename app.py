@@ -5,14 +5,16 @@ from flask_cors import CORS
 
 from blueprint.apk import apk
 from blueprint.configuration import configuration
-from database.db import mongo
 from blueprint.detection import detection
+from blueprint.link import link
+from database.db import mongo
 
 app = Flask(__name__)
 app.config.from_pyfile('config.py')
 app.register_blueprint(apk)
 app.register_blueprint(detection)
 app.register_blueprint(configuration)
+app.register_blueprint(link)
 CORS(app)
 mongo.init_app(app)
 
